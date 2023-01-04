@@ -1,0 +1,135 @@
+---
+source: src/flake8_bandit/mod.rs
+expression: checks
+---
+- kind:
+    BadFilePermissions: 151
+  location:
+    row: 6
+    column: 21
+  end_location:
+    row: 6
+    column: 26
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 7
+  location:
+    row: 7
+    column: 21
+  end_location:
+    row: 7
+    column: 24
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 511
+  location:
+    row: 9
+    column: 21
+  end_location:
+    row: 9
+    column: 26
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 504
+  location:
+    row: 10
+    column: 21
+  end_location:
+    row: 10
+    column: 26
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 510
+  location:
+    row: 11
+    column: 21
+  end_location:
+    row: 11
+    column: 26
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 511
+  location:
+    row: 13
+    column: 19
+  end_location:
+    row: 13
+    column: 22
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 511
+  location:
+    row: 14
+    column: 20
+  end_location:
+    row: 14
+    column: 25
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 511
+  location:
+    row: 15
+    column: 21
+  end_location:
+    row: 15
+    column: 26
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 511
+  location:
+    row: 17
+    column: 15
+  end_location:
+    row: 17
+    column: 20
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 511
+  location:
+    row: 18
+    column: 15
+  end_location:
+    row: 18
+    column: 33
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 511
+  location:
+    row: 19
+    column: 15
+  end_location:
+    row: 19
+    column: 57
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 8
+  location:
+    row: 20
+    column: 23
+  end_location:
+    row: 20
+    column: 35
+  fix: ~
+  parent: ~
+- kind:
+    BadFilePermissions: 2
+  location:
+    row: 22
+    column: 21
+  end_location:
+    row: 22
+    column: 33
+  fix: ~
+  parent: ~
+

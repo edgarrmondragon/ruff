@@ -8,7 +8,6 @@ use ruff::registry_gen::CheckCodePrefix;
 #[derive(Clone, Ord, PartialOrd, Eq, PartialEq)]
 pub enum Plugin {
     Flake8Annotations,
-    Flake8Bandit,
     Flake8BlindExcept,
     Flake8Bugbear,
     Flake8Builtins,
@@ -37,7 +36,6 @@ impl FromStr for Plugin {
     fn from_str(string: &str) -> Result<Self, Self::Err> {
         match string {
             "flake8-annotations" => Ok(Plugin::Flake8Annotations),
-            "flake8-bandit" => Ok(Plugin::Flake8Bandit),
             "flake8-blind-except" => Ok(Plugin::Flake8BlindExcept),
             "flake8-bugbear" => Ok(Plugin::Flake8Bugbear),
             "flake8-builtins" => Ok(Plugin::Flake8Builtins),
@@ -70,7 +68,6 @@ impl fmt::Debug for Plugin {
             "{}",
             match self {
                 Plugin::Flake8Annotations => "flake8-annotations",
-                Plugin::Flake8Bandit => "flake8-bandit",
                 Plugin::Flake8BlindExcept => "flake8-blind-except",
                 Plugin::Flake8Bugbear => "flake8-bugbear",
                 Plugin::Flake8Builtins => "flake8-builtins",
@@ -100,7 +97,6 @@ impl Plugin {
     pub fn prefix(&self) -> CheckCodePrefix {
         match self {
             Plugin::Flake8Annotations => CheckCodePrefix::ANN,
-            Plugin::Flake8Bandit => CheckCodePrefix::S,
             // TODO(charlie): Handle rename of `B` to `BLE`.
             Plugin::Flake8BlindExcept => CheckCodePrefix::BLE,
             Plugin::Flake8Bugbear => CheckCodePrefix::B,
@@ -272,7 +268,6 @@ pub fn infer_plugins_from_options(flake8: &HashMap<String, Option<String>>) -> V
 pub fn infer_plugins_from_codes(codes: &BTreeSet<CheckCodePrefix>) -> Vec<Plugin> {
     [
         Plugin::Flake8Annotations,
-        Plugin::Flake8Bandit,
         Plugin::Flake8BlindExcept,
         Plugin::Flake8Bugbear,
         Plugin::Flake8Builtins,

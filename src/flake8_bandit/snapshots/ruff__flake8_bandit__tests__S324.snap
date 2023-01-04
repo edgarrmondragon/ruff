@@ -1,0 +1,173 @@
+---
+source: src/flake8_bandit/mod.rs
+expression: checks
+---
+- kind:
+    UseOfInsecureHash:
+      - MD5
+      - true
+  location:
+    row: 3
+    column: 0
+  end_location:
+    row: 3
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - MD5
+      - true
+  location:
+    row: 4
+    column: 0
+  end_location:
+    row: 4
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - MD5
+      - true
+  location:
+    row: 5
+    column: 0
+  end_location:
+    row: 5
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - MD4
+      - true
+  location:
+    row: 7
+    column: 0
+  end_location:
+    row: 7
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - MD4
+      - true
+  location:
+    row: 8
+    column: 0
+  end_location:
+    row: 8
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - MD4
+      - true
+  location:
+    row: 9
+    column: 0
+  end_location:
+    row: 9
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - SHA1
+      - true
+  location:
+    row: 11
+    column: 0
+  end_location:
+    row: 11
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - SHA1
+      - true
+  location:
+    row: 12
+    column: 0
+  end_location:
+    row: 12
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - SHA1
+      - true
+  location:
+    row: 13
+    column: 0
+  end_location:
+    row: 13
+    column: 12
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - SHA
+      - true
+  location:
+    row: 15
+    column: 0
+  end_location:
+    row: 15
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - SHA
+      - true
+  location:
+    row: 16
+    column: 0
+  end_location:
+    row: 16
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - SHA
+      - true
+  location:
+    row: 17
+    column: 0
+  end_location:
+    row: 17
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - SHA1
+      - true
+  location:
+    row: 20
+    column: 0
+  end_location:
+    row: 20
+    column: 11
+  fix: ~
+  parent: ~
+- kind:
+    UseOfInsecureHash:
+      - SHA1
+      - true
+  location:
+    row: 21
+    column: 0
+  end_location:
+    row: 21
+    column: 12
+  fix: ~
+  parent: ~
+

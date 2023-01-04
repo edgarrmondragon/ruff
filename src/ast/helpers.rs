@@ -574,6 +574,50 @@ pub fn followed_by_multi_statement_line(stmt: &Stmt, locator: &SourceCodeLocator
     match_trailing_content(stmt, locator)
 }
 
+#[derive(Default)]
+pub struct SimpleCallArgs<'a> {
+    pub args: Vec<&'a Expr>,
+    pub kwargs: FxHashMap<&'a str, &'a Expr>,
+}
+
+impl<'a> SimpleCallArgs<'a> {
+    pub fn new(args: &'a Vec<Expr>, keywords: &'a Vec<Keyword>) -> Self {
+        let mut result = SimpleCallArgs::default();
+
+        for arg in args {
+            match &arg.node {
+                ExprKind::Starred { .. } => {
+                    break;
+                }
+                _ => {
+                    result.args.push(arg);
+                }
+            }
+        }
+
+        for keyword in keywords {
+            if let Some(arg) = &keyword.node.arg {
+                result.kwargs.insert(arg, &keyword.node.value);
+            }
+        }
+
+        result
+    }
+
+    pub fn get_argument(&self, name: &'a str, position: Option<usize>) -> Option<&'a Expr> {
+        let kwarg = self.kwargs.get(name);
+        if let Some(kwarg) = kwarg {
+            return Some(kwarg);
+        }
+        if let Some(position) = position {
+            if position < self.args.len() {
+                return Some(self.args[position]);
+            }
+        }
+        None
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use anyhow::Result;

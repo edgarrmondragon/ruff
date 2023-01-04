@@ -762,10 +762,14 @@ For more, see [flake8-bandit](https://pypi.org/project/flake8-bandit/4.1.1/) on 
 | ---- | ---- | ------- | --- |
 | S101 | AssertUsed | Use of `assert` detected |  |
 | S102 | ExecUsed | Use of `exec` detected |  |
+| S103 | BadFilePermissions | `os.chmod` setting a permissive mask `0o777` on file or directory |  |
 | S104 | HardcodedBindAllInterfaces | Possible binding to all interfaces |  |
 | S105 | HardcodedPasswordString | Possible hardcoded password: `"..."` |  |
 | S106 | HardcodedPasswordFuncArg | Possible hardcoded password: `"..."` |  |
 | S107 | HardcodedPasswordDefault | Possible hardcoded password: `"..."` |  |
+| S108 | HardcodedTempFile | Probable insecure usage of temp file/directory: `"..."` |  |
+| S324 | UseOfInsecureHash | Use of weak ... hash for security. Consider passing `usedforsecurity=False`. |  |
+| S506 | UseOfYamlLoad | Use of unsafe `yaml.load`. Allows instantiation of arbitrary objects. Consider `yaml.safe_load`. |  |
 
 ### flake8-blind-except (BLE)
 
@@ -2325,6 +2329,44 @@ of the following criteria:
 ```toml
 [tool.ruff.flake8-annotations]
 suppress-none-returning = true
+```
+
+---
+
+### `flake8-bandit`
+
+#### [`hardcoded-tmp-directory`](#hardcoded-tmp-directory)
+
+List of directories that are considered temporary.
+
+**Default value**: `["/tmp", "/var/tmp", "/dev/shm"]`
+
+**Type**: `Vec<String>`
+
+**Example usage**:
+
+```toml
+[tool.ruff.flake8-bandit]
+hardcoded_tmp_directory = ["/foo/bar"]
+```
+
+---
+
+#### [`hardcoded-tmp-directory-extend`](#hardcoded-tmp-directory-extend)
+
+List of directories that are considered temporary.
+These directories are added to the list in
+`hardcoded_tmp_directory`.
+
+**Default value**: `[]`
+
+**Type**: `Vec<String>`
+
+**Example usage**:
+
+```toml
+[tool.ruff.flake8-bandit]
+extend_hardcoded_tmp_directory = ["/foo/bar"]
 ```
 
 ---

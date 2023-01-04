@@ -321,10 +321,14 @@ pub enum CheckCode {
     // flake8-bandit
     S101,
     S102,
+    S103,
     S104,
     S105,
     S106,
     S107,
+    S108,
+    S324,
+    S506,
     // flake8-boolean-trap
     FBT001,
     FBT002,
@@ -1052,10 +1056,14 @@ pub enum CheckKind {
     // flake8-bandit
     AssertUsed,
     ExecUsed,
+    BadFilePermissions(u16),
     HardcodedBindAllInterfaces,
     HardcodedPasswordString(String),
     HardcodedPasswordFuncArg(String),
     HardcodedPasswordDefault(String),
+    HardcodedTempFile(String),
+    UseOfInsecureHash(String, bool),
+    UseOfYamlLoad,
     // mccabe
     FunctionIsTooComplex(String, usize),
     // flake8-boolean-trap
@@ -1502,10 +1510,15 @@ impl CheckCode {
             // flake8-bandit
             CheckCode::S101 => CheckKind::AssertUsed,
             CheckCode::S102 => CheckKind::ExecUsed,
+            CheckCode::S103 => CheckKind::BadFilePermissions(0o777),
             CheckCode::S104 => CheckKind::HardcodedBindAllInterfaces,
             CheckCode::S105 => CheckKind::HardcodedPasswordString("...".to_string()),
             CheckCode::S106 => CheckKind::HardcodedPasswordFuncArg("...".to_string()),
             CheckCode::S107 => CheckKind::HardcodedPasswordDefault("...".to_string()),
+            CheckCode::S108 => CheckKind::HardcodedTempFile("...".to_string()),
+            CheckCode::S324 => CheckKind::UseOfInsecureHash("...".to_string(), true),
+            CheckCode::S506 => CheckKind::UseOfYamlLoad,
+            // mccabe
             CheckCode::C901 => CheckKind::FunctionIsTooComplex("...".to_string(), 10),
             // flake8-boolean-trap
             CheckCode::FBT001 => CheckKind::BooleanPositionalArgInFunctionDefinition,
@@ -1901,10 +1914,14 @@ impl CheckCode {
             // flake8-bandit
             CheckCode::S101 => CheckCategory::Flake8Bandit,
             CheckCode::S102 => CheckCategory::Flake8Bandit,
+            CheckCode::S103 => CheckCategory::Flake8Bandit,
             CheckCode::S104 => CheckCategory::Flake8Bandit,
             CheckCode::S105 => CheckCategory::Flake8Bandit,
             CheckCode::S106 => CheckCategory::Flake8Bandit,
             CheckCode::S107 => CheckCategory::Flake8Bandit,
+            CheckCode::S108 => CheckCategory::Flake8Bandit,
+            CheckCode::S324 => CheckCategory::Flake8Bandit,
+            CheckCode::S506 => CheckCategory::Flake8Bandit,
             // flake8-simplify
             CheckCode::SIM105 => CheckCategory::Flake8Simplify,
             CheckCode::SIM118 => CheckCategory::Flake8Simplify,
@@ -2262,10 +2279,14 @@ impl CheckKind {
             // flake8-bandit
             CheckKind::AssertUsed => &CheckCode::S101,
             CheckKind::ExecUsed => &CheckCode::S102,
+            CheckKind::BadFilePermissions(..) => &CheckCode::S103,
             CheckKind::HardcodedBindAllInterfaces => &CheckCode::S104,
             CheckKind::HardcodedPasswordString(..) => &CheckCode::S105,
             CheckKind::HardcodedPasswordFuncArg(..) => &CheckCode::S106,
             CheckKind::HardcodedPasswordDefault(..) => &CheckCode::S107,
+            CheckKind::HardcodedTempFile(..) => &CheckCode::S108,
+            CheckKind::UseOfInsecureHash(..) => &CheckCode::S324,
+            CheckKind::UseOfYamlLoad => &CheckCode::S506,
             // mccabe
             CheckKind::FunctionIsTooComplex(..) => &CheckCode::C901,
             // flake8-boolean-trap
@@ -3176,6 +3197,9 @@ impl CheckKind {
             // flake8-bandit
             CheckKind::AssertUsed => "Use of `assert` detected".to_string(),
             CheckKind::ExecUsed => "Use of `exec` detected".to_string(),
+            CheckKind::BadFilePermissions(mask) => {
+                format!("`os.chmod` setting a permissive mask `{mask:#o}` on file or directory",)
+            }
             CheckKind::HardcodedBindAllInterfaces => {
                 "Possible binding to all interfaces".to_string()
             }
@@ -3187,6 +3211,23 @@ impl CheckKind {
                     string.escape_debug()
                 )
             }
+            CheckKind::HardcodedTempFile(string) => {
+                format!(
+                    "Probable insecure usage of temp file/directory: `\"{}\"`",
+                    string.escape_debug()
+                )
+            }
+            CheckKind::UseOfInsecureHash(hash, py39) => {
+                let message = format!("Use of weak {hash} hash for security.");
+                if *py39 {
+                    format!("{message} Consider passing `usedforsecurity=False`.")
+                } else {
+                    message
+                }
+            }
+            CheckKind::UseOfYamlLoad => "Use of unsafe `yaml.load`. Allows instantiation of \
+                                         arbitrary objects. Consider `yaml.safe_load`."
+                .to_string(),
             // flake8-blind-except
             CheckKind::BlindExcept(name) => format!("Do not catch blind exception: `{name}`"),
             // mccabe

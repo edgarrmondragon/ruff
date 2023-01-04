@@ -1868,10 +1868,44 @@ where
                         self.add_check(check);
                     }
                 }
+                if self.settings.enabled.contains(&CheckCode::S103) {
+                    if let Some(check) = flake8_bandit::plugins::bad_file_permissions(
+                        func,
+                        args,
+                        keywords,
+                        &self.from_imports,
+                        &self.import_aliases,
+                    ) {
+                        self.add_check(check);
+                    }
+                }
                 if self.settings.enabled.contains(&CheckCode::S106) {
                     self.add_checks(
                         flake8_bandit::plugins::hardcoded_password_func_arg(keywords).into_iter(),
                     );
+                }
+                if self.settings.enabled.contains(&CheckCode::S324) {
+                    if let Some(check) = flake8_bandit::plugins::hashlib_new_insecure(
+                        func,
+                        args,
+                        keywords,
+                        &self.from_imports,
+                        &self.import_aliases,
+                        self.settings.target_version >= PythonVersion::Py39,
+                    ) {
+                        self.add_check(check);
+                    }
+                }
+                if self.settings.enabled.contains(&CheckCode::S506) {
+                    if let Some(check) = flake8_bandit::plugins::yaml_load(
+                        func,
+                        args,
+                        keywords,
+                        &self.from_imports,
+                        &self.import_aliases,
+                    ) {
+                        self.add_check(check);
+                    }
                 }
 
                 // flake8-comprehensions
@@ -2513,6 +2547,15 @@ where
                     if let Some(check) = flake8_bandit::plugins::hardcoded_bind_all_interfaces(
                         value,
                         &Range::from_located(expr),
+                    ) {
+                        self.add_check(check);
+                    }
+                }
+                if self.settings.enabled.contains(&CheckCode::S108) {
+                    if let Some(check) = flake8_bandit::plugins::hardcoded_tmp_dir(
+                        expr,
+                        value,
+                        &mut self.settings.flake8_bandit.all_hardcoded_tmp_directories(),
                     ) {
                         self.add_check(check);
                     }
