@@ -21,6 +21,7 @@ use ruff::linter::FixTable;
 use ruff::logging::LogLevel;
 use ruff::message::{Location, Message};
 use ruff::registry::Rule;
+use ruff::settings::sarif;
 use ruff::settings::types::SerializationFormat;
 use ruff::{fix, notify_user};
 
@@ -371,6 +372,57 @@ impl Printer {
                     );
                     writeln!(stdout, "{label}")?;
                 }
+            }
+            SerializationFormat::Sarif => {
+                // Generate violations in SARIF format.
+                // See: https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html
+                let report = sarif::Report {
+                    version: "2.1.0".to_string(),
+                    schema_uri: Some(
+                        "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json"
+                            .to_string(),
+                    ),
+                    runs: Vec::from_iter([sarif::Run {
+                        tool: sarif::Tool {
+                            driver: sarif::SarifToolDriver {
+                                name: "Ruff".to_string(),
+                                short_description: sarif::MultiFormatMessageString {
+                                    text: "An extremely fast Python linter, written in Rust."
+                                        .to_string(),
+                                    markdown: String::new(),
+                                },
+                                version: env!("CARGO_PKG_VERSION").to_string(),
+                                rules: vec![],
+                            },
+                        },
+                        results: diagnostics
+                            .messages
+                            .iter()
+                            .map(|msg| sarif::Result {
+                                rule_id: msg.kind.rule().noqa_code().to_string(),
+                                level: sarif::Level::Error,
+                                message: sarif::Message {
+                                    text: msg.kind.body(),
+                                    markdown: msg.kind.body(),
+                                },
+                                locations: vec![sarif::Location {
+                                    physical_location: sarif::PhysicalLocation {
+                                        artifact_location: sarif::ArtifactLocation {
+                                            uri: relativize_path(Path::new(&msg.filename)),
+                                        },
+                                        region: sarif::Region {
+                                            start_line: msg.location.row(),
+                                            start_column: msg.location.column(),
+                                            end_line: msg.end_location.row(),
+                                            end_column: msg.end_location.column(),
+                                        },
+                                    },
+                                }],
+                            })
+                            .collect::<Vec<sarif::Result>>(),
+                    }]),
+                };
+                writeln!(stdout, "{}", serde_json::to_string_pretty(&report)?)?;
             }
         }
 

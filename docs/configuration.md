@@ -208,7 +208,7 @@ Options:
       --fix-only
           Fix any fixable lint violations, but don't report on leftover violations. Implies `--fix`
       --format <FORMAT>
-          Output serialization format for violations [env: RUFF_FORMAT=] [possible values: text, json, junit, grouped, github, gitlab, pylint]
+          Output serialization format for violations [env: RUFF_FORMAT=] [possible values: text, json, junit, grouped, github, gitlab, pylint, sarif]
       --target-version <TARGET_VERSION>
           The minimum Python version that should be supported
       --config <CONFIG>

@@ -32,6 +32,7 @@ pub mod options;
 pub mod options_base;
 pub mod pyproject;
 mod rule_table;
+pub mod sarif;
 pub mod types;
 
 const CARGO_PKG_VERSION: &str = env!("CARGO_PKG_VERSION");

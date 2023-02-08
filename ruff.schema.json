@@ -2135,7 +2135,8 @@
         "grouped",
         "github",
         "gitlab",
-        "pylint"
+        "pylint",
+        "sarif"
       ]
     },
     "Strictness": {
